@@ -1,35 +1,3 @@
-function register() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-  firebase.auth().createUserWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-      document.getElementById("auth-message").innerText = "🎉 Compte créé avec succès !";
-    })
-    .catch((error) => {
-      document.getElementById("auth-message").innerText = error.message;
-    });
-}
-
-function login() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-  firebase.auth().signInWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-      document.getElementById("auth-message").innerText = "👑 Connexion réussie, Queen !";
-    })
-    .catch((error) => {
-      document.getElementById("auth-message").innerText = error.message;
-    });
-}
-function logout() {
-  firebase.auth().signOut()
-    .then(() => {
-      document.getElementById("auth-message").innerText = "👋 Déconnexion réussie !";
-    })
-    .catch((error) => {
-      document.getElementById("auth-message").innerText = error.message;
-    });
-}
 // 0. Initialisation de Firebase
 // 1. Charger les entrées sauvegardées
 function loadDaily() {
@@ -85,6 +53,27 @@ function saveDaily(e) {
     foodNotes: document.getElementById('food-notes').value
   };
 
+  function saveDaily(event) {
+    event.preventDefault();
+    const date = document.getElementById('date').value;
+    const poids = document.getElementById('poids').value;
+    const taille = document.getElementById('taille').value;
+    const eau = document.getElementById('eau').value;
+    const workout = document.getElementById('workout').value;
+    const breakfast = document.getElementById('breakfast').value;
+    const lunch = document.getElementById('lunch').value;
+    const dinner = document.getElementById('dinner').value;
+    const snack1 = document.getElementById('snack1').value;
+    const snack2 = document.getElementById('snack2').value;
+    const foodNotes = document.getElementById('food-notes').value;
+
+    Document.getElementById('sucess-message').style.display = 'block';
+    setTimeout(() => {
+      document.getElementById('sucess-message').style.display = 'none';
+    }, 3000);
+  }
+
+
   firebase.database().ref(`users/${user.uid}/entries`).push(data)
     .then(() => {
       alert("Données sauvegardées dans le cloud ✅");
@@ -101,7 +90,6 @@ function deleteEntry(dateToDelete) {
   const filtered = saved.filter(entry => entry.date !== dateToDelete);
   localStorage.setItem('dailyEntries', JSON.stringify(filtered));
 }
-
 // 5. Générer un vrai PDF
 async function generatePDF() {
   const { jsPDF } = window.jspdf;
@@ -119,16 +107,4 @@ async function generatePDF() {
     if (y > 270) { doc.addPage(); y = 10; }
   });
   doc.save("Mon_Suivi_Journalier.pdf");
-}
-
-// N’oublie pas dans ton HTML :
-// <form onsubmit="saveDaily(event)"> …
-// <button onclick="generatePDF()">📄 Générer PDF</button>
-// Fonction : sauvegarder le texte du journal
-function saveJournal() {
-  const text = document.getElementById('journal-entry').value;
-  const date = new Date().toLocaleDateString();
-  const output = document.getElementById('journal-output');
-  output.innerHTML += <p><strong>${date}</strong>: ${text}</p>;
-  document.getElementById('journal-entry').value = '';
 }

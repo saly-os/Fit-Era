@@ -22,6 +22,14 @@ nav a {
   text-decoration: none;
   font-weight: bold;
 }
+nav a.active {
+  color: #ffc1e3;
+  color: #000;
+  border-radius: 10px;
+  background-color: #ff69b4;
+  padding: 5px 10px;
+  transition: background-color 0.3s ease;
+}
 .centered {
   text-align: center;
   padding: 20px;
@@ -132,4 +140,92 @@ textarea {
   border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
+}
+.auth-buttons button:hover {
+  background-color: #ff69b4;
+}
+.auth-buttons button:disabled {
+  background-color: #d48cc0;
+  cursor: not-allowed;
+}
+.auth-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+.auth-buttons button {
+  flex: 1;
+  max-width: 150px;
+}
+.auth-buttons button:hover {
+  background-color: #ff69b4;
+}
+.auth-buttons button:disabled {
+  background-color: #d48cc0;
+  cursor: not-allowed;
+}
+#auth .error {
+  color: #ff0000;
+  font-size: 14px;
+  margin-top: 10px;
+}
+#auth .success {
+  color: #00ff00;
+  font-size: 14px;
+  margin-top: 10px;
+}
+#auth .info {
+  color: #0000ff;
+  font-size: 14px;
+  margin-top: 10px;
+}
+#auth .info a {
+  color: #0000ff;
+  text-decoration: underline;
+}
+#auth .info a:hover {
+  text-decoration: none;
+}
+#auth .info a:visited {
+  color: #800080;
+}
+#auth .info a:active {
+  color: #ff69b4;
+}
+#auth .info a:focus {
+  outline: none;
+  box-shadow: 0 0 5px #ff69b4;
+}
+#auth .info a:focus-visible {
+  outline: none;
+  box-shadow: 0 0 5px #ff69b4;
+}
+@media screen and (max-width: 600px) {
+  body {
+    font-size: 14px;
+  }
+  header, footer {
+    padding: 10px;
+  }
+  nav a {
+    margin: 0 5px;
+    font-size: 14px;
+  }
+  input, textarea, select, button {
+    width: 90%;
+    max-width: none;
+  }
+  table {
+    width: 100%;
+    font-size: 14px;
+  }
+  nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  main.centered {
+    padding: 1rem;
+  }
+  
 }
