@@ -2,60 +2,36 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="description" content="Track your fitness, meals & affirmations in your personal glow-up era.">
-<meta property="og:title" content="New Gains Era 💪🏽🌸">
-<meta property="og:description" content="Hot Girl Evolution Tracker">
-<meta property="og:type" content="website">
-<meta property="og:image" content="path/to/cute-preview-image.jpg">
-  <title>New Gains Era 💖</title>
+  <title>Accueil</title>
   <link rel="stylesheet" href="style.css">
-  <script src="script/authguard.js"></script>
-  <script src="script/scipt.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
+  <script src="index_firebase.js" defer></script>
+  <script src="protectedtracker.js" defer></script>
 </head>
 <body>
   <header>
-  <h1>New Gains Era 💪🏽🌸</h1>
-  <nav>
-    <a href="login.html">login</a>
-    <a href="index.html" class="active">Accueil</a>
-    <a href="affirmations.html">Affirmations</a>
-    <a href="workouts.html">Workouts</a>
-    <a href="daily_tracker.html">Daily Tracker</a>
-    <a href="weekly_tracker.html">Weekly Tracker</a>
-    <a href="monthly_tracker.html">Monthly Tracker</a>
-    <a href="journal.html">Journal</a>
-  </nav>
-  <h1>Accueil</h1>
+    <h1>New Gains Era 💪🏽🌸</h1>
+    <nav>
+      <a href="index.html">Accueil</a>
+      <a href="affirmations.html">Affirmations</a>
+      <a href="workouts.html">Workouts</a>
+      <a href="daily_tracker.html">Daily Tracker</a>
+      <a href="weekly_tracker.html">Weekly Tracker</a>
+      <a href="monthly_tracker.html">Monthly Tracker</a>
+      <a href="journal.html">Journal</a>
+    </nav>
+    <h1>Accueil</h1>
   </header>
-
   <main class="centered">
-    <h2>Bienvenue Queen 👑</h2>
-    <p>Ceci est ton espace personnel. Ta Glow-Up era commence ici.</p>
-    <p>Clique sur un lien ci-dessus pour naviguer 🔗</p>
-    <p>Rappelle-toi, chaque jour est une nouvelle opportunité de briller !</p>
-    <p>Tu es belle, forte et capable de tout accomplir. 💖</p>
-    <p>Prends soin de toi et reste motivée !</p>
-    <p>✨ "La beauté commence au moment où tu décides d'être toi-même." - Coco Chanel</p>
-    <p>🌸 "La confiance en soi est la meilleure tenue qu'une femme puisse porter." - Blake Lively</p>
-    <p>💪🏽 "Le succès n'est pas la clé du bonheur. Le bonheur est la clé du succès." - Albert Schweitzer</p>
-    <p>🌼 "La beauté est dans les yeux de celui qui regarde." - Margaret Wolfe Hungerford</p>
-    <p>💖 "La beauté est une lumière dans le cœur." - Khalil Gibran</p>
-    <p>🌷 "La beauté est la promesse du bonheur." - Stendhal</p>
-    <p>🌺 "La beauté est éternelle." - William Shakespeare</p>
-    <p>🌻 "La beauté est la seule chose qui ne se fane jamais." - Oscar Wilde</p>
-    <p>🌹 "La beauté est la poésie de la vie." - John Keats</p>
-    <p>🌈 "La beauté est la splendeur de la vérité." - Platon</p>
-    <p>🌟 "La beauté est la lumière du cœur." - Victor Hugo</p>
-    <p>🌙 "La beauté est la musique de l'âme." - Friedrich Nietzsche</p>
-    <br>
-    <button id="logout">Déconnexion</button>
+    <h2 id="welcome"></h2>
+    <p>Bienvenue sur ton dashboard New Gains Era !</p>
+    <p id="dashboard-message"></p>
   </main>
-  <script src="script.js"></script>
-    <footer>
-  <p>✨ Made with love by Me, for Me 💖</p>
-  <p class="small">Hot Girl Evolution Era • Stay glowing 🔥</p>
-  <p>&copy; 2025 New Gains Era. Tous droits réservés.</p>
-</footer>
-<script type="module" src="script/protectedtracker.js"></script>
+  <footer>
+    <p>✨ Made with love by Me, for Me 💖</p>
+    <p class="small">Hot Girl Evolution Era • Stay glowing 🔥</p>
+    <p>&copy; 2023 New Gains Era. Tous droits réservés.</p>
+  </footer>
 </body>
 </html>

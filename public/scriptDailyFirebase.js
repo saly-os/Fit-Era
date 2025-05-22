@@ -1,44 +1,44 @@
-// 0. Initialisation de Firebase
-// 1. Charger les entrées sauvegardées
-function loadDaily() {
-  const saved = JSON.parse(localStorage.getItem('dailyEntries') || '[]');
-  saved.forEach(data => renderEntry(data));
-}
-document.addEventListener('DOMContentLoaded', loadDaily);
+// --- Initialisation Firebase ---
+const firebaseConfig = {
+  apiKey: "AIzaSyApHKktjUp1693l2WrODGM8WVf1zsb_4Co",
+  authDomain: "fit-journey-c9595.firebaseapp.com",
+  projectId: "fit-journey-c9595",
+  storageBucket: "fit-journey-c9595.firebasestorage.app",
+  messagingSenderId: "743314539613",
+  appId: "1:743314539613:web:09a5a6d17bea2375a1b9b4"
+};
+firebase.initializeApp(firebaseConfig);
 
-// 2. Affichage d’une entrée
-function renderEntry(data) {
-  const { date, poids, taille, eau, workout, breakfast, lunch, dinner, snack1, snack2, foodNotes } = data;
-  const entry = document.createElement("div");
-  entry.classList.add("daily-entry");
-  entry.innerHTML = `
-    <h4>📆 ${date}</h4>
-    <p><strong>Poids:</strong> ${poids}kg • <strong>Taille:</strong> ${taille}cm • <strong>Eau:</strong> ${eau}L • <strong>Workout:</strong> ${workout}</p>
-    <p><strong>🍳 Petit-déj:</strong> ${breakfast || "—"}<br>
-       <strong>🥪 Déjeuner:</strong> ${lunch || "—"}<br>
-       <strong>🍲 Dîner:</strong> ${dinner || "—"}<br>
-       <strong>🍓 Snack 1:</strong> ${snack1 || "—"}<br>
-       <strong>🍫 Snack 2:</strong> ${snack2 || "—"}</p>
-    ${foodNotes ? <p><strong>📝 Remarques:</strong> ${foodNotes}</p> : ""}
-    <button class="delete-btn">🗑 Supprimer</button>
-    <hr>
-  `;
-  entry.querySelector('.delete-btn').addEventListener('click', () => {
-    entry.remove();
-    deleteEntry(data.date);
-  });
-  document.getElementById("daily-results").appendChild(entry);
-}
+const auth = firebase.auth();
+const db = firebase.firestore();
 
-// 3. Sauvegarder une nouvelle entrée
-function saveDaily(e) {
+let currentUser = null;
+
+// Vérifier la connexion de l'utilisateur
+auth.onAuthStateChanged((user) => {
+  currentUser = user;
+  if (user) {
+    document.getElementById('firebase-message').innerText = "Connectée en tant que " + (user.email || "");
+    loadDailyEntries();
+  } else {
+    document.getElementById('firebase-message').innerText = "⚠️ Connecte-toi pour voir et enregistrer tes suivis.";
+    document.getElementById('daily-results').innerHTML = "";
+  }
+});
+
+// Gestion du formulaire
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('daily-form').addEventListener('submit', saveDailyFirebase);
+  document.getElementById('pdf-btn').addEventListener('click', generatePDF);
+});
+
+// Sauvegarder une entrée dans Firestore
+async function saveDailyFirebase(e) {
   e.preventDefault();
-  const user = firebase.auth().currentUser;
-  if (!user) {
+  if (!currentUser) {
     alert("Tu dois être connectée pour enregistrer.");
     return;
   }
-
   const data = {
     date: document.getElementById('date').value,
     poids: document.getElementById('poids').value,
@@ -50,48 +50,74 @@ function saveDaily(e) {
     dinner: document.getElementById('dinner').value,
     snack1: document.getElementById('snack1').value,
     snack2: document.getElementById('snack2').value,
-    foodNotes: document.getElementById('food-notes').value
+    foodNotes: document.getElementById('food-notes').value,
+    userId: currentUser.uid
   };
-
-  function saveDaily(event) {
-    event.preventDefault();
-    const date = document.getElementById('date').value;
-    const poids = document.getElementById('poids').value;
-    const taille = document.getElementById('taille').value;
-    const eau = document.getElementById('eau').value;
-    const workout = document.getElementById('workout').value;
-    const breakfast = document.getElementById('breakfast').value;
-    const lunch = document.getElementById('lunch').value;
-    const dinner = document.getElementById('dinner').value;
-    const snack1 = document.getElementById('snack1').value;
-    const snack2 = document.getElementById('snack2').value;
-    const foodNotes = document.getElementById('food-notes').value;
-
-    Document.getElementById('sucess-message').style.display = 'block';
-    setTimeout(() => {
-      document.getElementById('sucess-message').style.display = 'none';
-    }, 3000);
+  try {
+    // Unicité par date+user : remplace si existe déjà
+    const ref = db.collection("dailyEntries");
+    const existing = await ref.where("userId", "==", currentUser.uid).where("date", "==", data.date).get();
+    if (!existing.empty) {
+      // Supprime l'existant
+      existing.forEach(doc => doc.ref.delete());
+    }
+    await ref.add(data);
+    document.getElementById('firebase-message').innerText = "✅ Données sauvegardées dans le cloud !";
+    e.target.reset();
+    loadDailyEntries();
+  } catch (err) {
+    document.getElementById('firebase-message').innerText = "❌ Erreur lors de la sauvegarde : " + err.message;
   }
-
-
-  firebase.database().ref(`users/${user.uid}/entries`).push(data)
-    .then(() => {
-      alert("Données sauvegardées dans le cloud ✅");
-      e.target.reset();
-    })
-    .catch((error) => {
-      alert("Erreur Firebase : " + error.message);
-    });
 }
 
-// 4. Supprimer du storage
-function deleteEntry(dateToDelete) {
-  const saved = JSON.parse(localStorage.getItem('dailyEntries') || '[]');
-  const filtered = saved.filter(entry => entry.date !== dateToDelete);
-  localStorage.setItem('dailyEntries', JSON.stringify(filtered));
+// Charger les entrées de l'utilisateur depuis Firestore
+async function loadDailyEntries() {
+  if (!currentUser) return;
+  const ref = db.collection("dailyEntries");
+  const snapshot = await ref.where("userId", "==", currentUser.uid).orderBy("date", "desc").get();
+  const container = document.getElementById('daily-results');
+  container.innerHTML = "";
+  snapshot.forEach(doc => {
+    renderEntry(doc.data(), doc.id);
+  });
 }
-// 5. Générer un vrai PDF
-async function generatePDF() {
+
+// Afficher une entrée
+function renderEntry(data, docId) {
+  const { date, poids, taille, eau, workout, breakfast, lunch, dinner, snack1, snack2, foodNotes } = data;
+  const entry = document.createElement("div");
+  entry.classList.add("daily-entry");
+  entry.innerHTML = `
+    <h4>📆 ${date}</h4>
+    <p><strong>Poids:</strong> ${poids}kg • <strong>Taille:</strong> ${taille}cm • <strong>Eau:</strong> ${eau}L • <strong>Workout:</strong> ${workout}</p>
+    <p><strong>🍳 Petit-déj:</strong> ${breakfast || "—"}<br>
+       <strong>🥪 Déjeuner:</strong> ${lunch || "—"}<br>
+       <strong>🍲 Dîner:</strong> ${dinner || "—"}<br>
+       <strong>🍓 Snack 1:</strong> ${snack1 || "—"}<br>
+       <strong>🍫 Snack 2:</strong> ${snack2 || "—"}</p>
+    ${foodNotes ? `<p><strong>📝 Remarques:</strong> ${foodNotes}</p>` : ""}
+    <button class="delete-btn">🗑 Supprimer</button>
+    <hr>
+  `;
+  entry.querySelector('.delete-btn').addEventListener('click', () => {
+    deleteEntryFirebase(docId);
+  });
+  document.getElementById("daily-results").appendChild(entry);
+}
+
+// Supprimer une entrée depuis Firestore
+async function deleteEntryFirebase(docId) {
+  if (!confirm("Supprimer cette entrée ?")) return;
+  try {
+    await db.collection("dailyEntries").doc(docId).delete();
+    loadDailyEntries();
+  } catch (err) {
+    alert("Erreur lors de la suppression : " + err.message);
+  }
+}
+
+// Générer un PDF de toutes les entrées affichées
+function generatePDF() {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
   const entries = document.querySelectorAll(".daily-entry");
