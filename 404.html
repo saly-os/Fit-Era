@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>404 - Page introuvable</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #cdb4fe 0%, #7e4fff 100%);
+      color: #3d2366;
+      font-family: 'Poppins', 'Roboto', Arial, sans-serif;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .error-container {
+      background: rgba(255,255,255,0.96);
+      border-radius: 20px;
+      box-shadow: 0 6px 32px 0 rgba(126, 79, 255,0.14), 0 1.5px 4px 0 rgba(0,0,0,0.08);
+      max-width: 370px;
+      margin: 48px auto 0;
+      padding: 32px 24px 20px;
+      text-align: center;
+      border: 2px solid #cdb4fe;
+    }
+    .error-container img {
+      width: 110px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(126,79,255,0.20);
+    }
+    .error-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin: 0 0 12px;
+      color: #7e4fff;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 8px #cdb4fe80;
+    }
+    .error-emoji {
+      font-size: 3rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+    .error-message {
+      font-size: 1.1rem;
+      margin-bottom: 22px;
+      color: #3d2366;
+    }
+    .back-home {
+      display: inline-block;
+      background: linear-gradient(90deg, #7e4fff 60%, #cdb4fe 100%);
+      color: #fff;
+      padding: 13px 30px;
+      border: none;
+      border-radius: 30px;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-decoration: none;
+      box-shadow: 0 2px 8px rgba(126, 79, 255,0.13);
+      transition: background 0.3s;
+      margin-bottom: 10px;
+    }
+    .back-home:hover {
+      background: linear-gradient(90deg, #cdb4fe 20%, #7e4fff 100%);
+      color: #fff;
+    }
+    @media (max-width: 600px) {
+      .error-container {
+        margin: 0 8px;
+        padding: 20px 6px 14px;
+      }
+      .error-title { font-size: 2rem; }
+      .error-message { font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="error-container">
+    <span class="error-emoji">🐾</span>
+    <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExenFmeDZlNzF6N2RjZ2xmbXM0M3BzZ3k1dzl2Mnk4a3I4d3h3cDZ1aSZjdD1n/Nm8ZPAGOwZUQM/giphy.gif" alt="Chat mignon perdu">
+    <div class="error-title">404</div>
+    <div class="error-message">
+      Oups ! Cette page n'existe pas ou n'est plus disponible.<br>
+      Mais t'inquiète, tu peux revenir à l'accueil et rester dans la vibe ✨
+    </div>
+    <a class="back-home" href="index.html">🏠 Retour à l'accueil</a>
+  </div>
+</body>
+</html>
