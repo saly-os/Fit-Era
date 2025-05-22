@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Tracker Hebdomadaire</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Firebase SDKs et script -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"></script>
+  <script src="scriptWeeklyFirebase.js" defer></script>
+  <script src="protectedtracker.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>New Gains Era 💪🏽🌸</h1>
+    <nav>
+      <a href="index.html">Login</a>
+      <a href="accueil.html">Accueil</a>
+      <a href="affirmations.html">Affirmations</a>
+      <a href="workouts.html">Workouts</a>
+      <a href="daily_tracker.html">Daily Tracker</a>
+      <a href="weekly_tracker.html" class="active">Weekly Tracker</a>
+      <a href="monthly_tracker.html">Monthly Tracker</a>
+      <a href="journal.html">Journal</a>
+    </nav>
+    <h1>Suivi Hebdomadaire 🗓️</h1>
+  </header>
+  <main class="centered">
+    <form id="weekly-form">
+      <input type="week" id="week-date" required>
+      <input type="number" placeholder="Poids (kg)" id="week-poids" required>
+      <input type="number" step="0.1" placeholder="Eau (L)" id="week-eau" required>
+      <input type="text" placeholder="Workout principal" id="week-workout" required>
+      <input type="text" placeholder="Ressenti, notes..." id="week-ressenti">
+      <button type="submit">Sauvegarder</button>
+    </form>
+    <table>
+      <thead>
+        <tr>
+          <th>Semaine</th>
+          <th>Poids</th>
+          <th>Eau</th>
+          <th>Workout</th>
+          <th>Ressenti</th>
+          <th>Supprimer</th>
+        </tr>
+      </thead>
+      <tbody id="weekly-table-body"></tbody>
+    </table>
+    <p id="weekly-message"></p>
+  </main>
+  <footer>
+    <p>✨ Made with love by Me, for Me 💖</p>
+    <p class="small">Hot Girl Evolution Era • Stay glowing 🔥</p>
+    <p>&copy; 2023 New Gains Era. Tous droits réservés.</p>
+  </footer>
+</body>
+</html>
