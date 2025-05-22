@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "new-gains-tracker"
-  }
+    "default": "fit-journey-c9595",
+    "Fit-Journey": "fit-journey-c9595"
+  },
+  "targets": {},
+  "etags": {}
 }
